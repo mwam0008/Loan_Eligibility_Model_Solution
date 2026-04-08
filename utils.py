@@ -79,7 +79,7 @@ def plot_confusion_matrix(cm, model_name: str):
         sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
                     xticklabels=['Denied (0)', 'Approved (1)'],
                     yticklabels=['Denied (0)', 'Approved (1)'], ax=ax)
-        ax.set_title(f'{model_name} — Confusion Matrix', fontweight='bold')
+        ax.set_title(f'{model_name} - Confusion Matrix', fontweight='bold')
         ax.set_ylabel('Actual')
         ax.set_xlabel('Predicted')
         plt.tight_layout()
