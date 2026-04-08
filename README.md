@@ -1,4 +1,4 @@
-# 💳 Loan Eligibility Prediction
+# Loan Eligibility Prediction
 
 A Streamlit web app that predicts whether a loan applicant should be **approved or denied** using 3 classification models.
 
@@ -46,17 +46,12 @@ loan_app/
 
 ## Key Concepts
 
-- **Missing Value Imputation** — mode for categorical, median for numerical
-- **One-Hot Encoding** — converts categorical columns to numbers
-- **MinMax Scaling** — normalizes features to 0-1 range
-- **Cross Validation** — KFold with 5 splits for reliable accuracy estimate
-- **Decision Threshold** — adjust LR threshold from 0.5 to 0.7 for conservative approval
+- **Missing Value Imputation** - mode for categorical, median for numerical
+- **One-Hot Encoding** - converts categorical columns to numbers
+- **MinMax Scaling** - normalizes features to 0-1 range
+- **Cross Validation** - KFold with 5 splits for reliable accuracy estimate
+- **Decision Threshold** - adjust LR threshold from 0.5 to 0.7 for conservative approval
 
 ## Dataset
 
 614 German credit loan applicants with 13 features including income, loan amount, credit history, and property area.
-
-## Course
-
-CST2216 — Machine Learning 2: Advanced Models and Emerging Topics
-Algonquin College
