@@ -24,9 +24,9 @@ from utils import (
 
 # fix import name typo
 
-st.set_page_config(page_title="Loan Eligibility Predictor", page_icon="💳", layout="wide")
+st.set_page_config(page_title="Loan Eligibility Predictor", layout="wide")
 
-st.title("💳 Loan Eligibility Prediction")
+st.title("Loan Eligibility Prediction")
 st.markdown("Predict whether a loan applicant should be **approved or denied** using ML classification models.")
 
 DATA_PATH = "credit.csv"
@@ -38,22 +38,22 @@ def get_raw_data():
 try:
     raw_df = get_raw_data()
 except Exception as e:
-    st.error(f"❌ Could not load credit.csv. Error: {e}")
+    st.error(f"Could not load credit.csv. Error: {e}")
     st.stop()
 
-st.sidebar.title("📂 Navigation")
+st.sidebar.title("Navigation")
 section = st.sidebar.radio("Choose a section:", [
-    "📊 Data Overview",
-    "🤖 Train & Compare Models",
-    "📈 Cross Validation",
-    "🔮 Predict Loan Eligibility",
+    "Data Overview",
+    "Train & Compare Models",
+    "Cross Validation",
+    "Predict Loan Eligibility",
 ])
 
 # ════════════════════════════════════════════════════════════
-# SECTION 1 — Data Overview
+# SECTION 1 - Data Overview
 # ════════════════════════════════════════════════════════════
-if section == "📊 Data Overview":
-    st.header("📊 Data Overview")
+if section == "Data Overview":
+    st.header("Data Overview")
 
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("Total Applicants", raw_df.shape[0])
@@ -66,37 +66,37 @@ if section == "📊 Data Overview":
 
     col1, col2 = st.columns(2)
     with col1:
-        st.subheader("✅ Loan Approval Distribution")
+        st.subheader("Loan Approval Distribution")
         fig = plot_loan_approval_distribution(raw_df)
         st.pyplot(fig)
     with col2:
-        st.subheader("⚠️ Missing Values")
+        st.subheader("Missing Values")
         fig2 = plot_missing_values(raw_df)
         st.pyplot(fig2)
 
-    st.subheader("💰 Applicant Income by Loan Outcome")
+    st.subheader("Applicant Income by Loan Outcome")
     fig3 = plot_income_distribution(raw_df)
     st.pyplot(fig3)
 
-    st.subheader("🏦 Credit History vs Loan Approval")
+    st.subheader("Credit History vs Loan Approval")
     st.markdown("Having a credit history dramatically increases approval chances.")
     fig4 = plot_credit_history_approval(raw_df)
     st.pyplot(fig4)
 
-    st.subheader("📋 Dataset Statistics")
+    st.subheader("Dataset Statistics")
     st.dataframe(raw_df.describe(include='all'))
 
 # ════════════════════════════════════════════════════════════
-# SECTION 2 — Train & Compare Models
+# SECTION 2 - Train & Compare Models
 # ════════════════════════════════════════════════════════════
-elif section == "🤖 Train & Compare Models":
-    st.header("🤖 Train & Compare All 3 Models")
+elif section == "Train & Compare Models":
+    st.header("Train & Compare All 3 Models")
     st.markdown("""
     The notebook trains **3 classifiers** and compares them.
     **Goal: accuracy above 76%.**
     """)
 
-    st.sidebar.subheader("⚙️ Settings")
+    st.sidebar.subheader("Settings")
     test_size    = st.sidebar.slider("Test Set Size", 0.1, 0.4, 0.2, step=0.05)
     n_estimators = st.sidebar.slider("RF: Number of Trees", 50, 300, 100, step=50)
     max_depth    = st.sidebar.select_slider("RF: Max Depth",
@@ -106,8 +106,8 @@ elif section == "🤖 Train & Compare Models":
 
     md = None if max_depth == "None" else int(max_depth)
 
-    if st.button("🚀 Train All 3 Models"):
-        with st.spinner("Preprocessing data and training models... ⏳"):
+    if st.button("Train All 3 Models"):
+        with st.spinner("Preprocessing data and training models..."):
             try:
                 processed = preprocess(raw_df)
                 xtrain, xtest, ytrain, ytest, xtrain_sc, xtest_sc, scaler, columns = \
@@ -129,10 +129,10 @@ elif section == "🤖 Train & Compare Models":
                              lrmodel if lr_acc >= dt_acc else dtmodel
                 save_model(best_model, scaler, columns, 'Loan_Model.pkl')
 
-                st.success("✅ All 3 models trained! Best model saved as Loan_Model.pkl")
+                st.success("All 3 models trained! Best model saved as Loan_Model.pkl")
 
                 # Accuracy metrics
-                st.subheader("📊 Accuracy Comparison")
+                st.subheader("Accuracy Comparison")
                 results = {
                     "Logistic Regression": lr_acc,
                     "Decision Tree": dt_acc,
@@ -141,14 +141,14 @@ elif section == "🤖 Train & Compare Models":
 
                 col1, col2, col3 = st.columns(3)
                 for col, (name, acc) in zip([col1, col2, col3], results.items()):
-                    status = "✅" if acc >= 0.76 else "❌"
+                    status = "sucess" if acc >= 0.76 else "fail"
                     col.metric(name, f"{acc:.2%}", delta=f"{status} {'Above' if acc >= 0.76 else 'Below'} 76% target")
 
                 fig = plot_accuracy_comparison(results)
                 st.pyplot(fig)
 
                 # Confusion matrices
-                st.subheader("🔲 Confusion Matrices")
+                st.subheader("Confusion Matrices")
                 col1, col2, col3 = st.columns(3)
                 with col1:
                     fig = plot_confusion_matrix(lr_cm, "Logistic Regression")
@@ -161,7 +161,7 @@ elif section == "🤖 Train & Compare Models":
                     st.pyplot(fig)
 
                 # Classification reports
-                st.subheader("📋 Classification Reports")
+                st.subheader("Classification Reports")
                 col1, col2, col3 = st.columns(3)
                 with col1:
                     st.caption("Logistic Regression")
@@ -174,7 +174,7 @@ elif section == "🤖 Train & Compare Models":
                     st.dataframe(pd.DataFrame(rf_rep).T.round(3))
 
                 # Feature importance
-                st.subheader("🌲 Random Forest Feature Importance")
+                st.subheader("Random Forest Feature Importance")
                 fig = plot_feature_importance(rfmodel, columns)
                 st.pyplot(fig)
 
@@ -185,32 +185,32 @@ elif section == "🤖 Train & Compare Models":
                 st.session_state['ytrain'] = ytrain
 
                 winner = max(results, key=results.get)
-                st.info(f"🏆 **{winner}** wins with {results[winner]:.2%} accuracy!")
+                st.info(f"**{winner}** wins with {results[winner]:.2%} accuracy!")
 
             except Exception as e:
-                st.error(f"❌ Training failed: {e}")
+                st.error(f"Training failed: {e}")
                 import traceback
                 st.code(traceback.format_exc())
 
 # ════════════════════════════════════════════════════════════
-# SECTION 3 — Cross Validation
+# SECTION 3 - Cross Validation
 # ════════════════════════════════════════════════════════════
-elif section == "📈 Cross Validation":
-    st.header("📈 Cross Validation")
+elif section == "Cross Validation":
+    st.header("Cross Validation")
     st.markdown("""
     **Cross Validation** tests the model on 5 different splits of the data,
     giving a more reliable accuracy estimate than a single train/test split.
     """)
 
-    st.info("⚠️ Please train models first in **Train & Compare Models** before running cross validation.")
+    st.info("Please train models first in **Train & Compare Models** before running cross validation.")
 
     n_splits = st.slider("Number of Folds", 3, 10, 5)
 
-    if st.button("🔄 Run Cross Validation"):
+    if st.button("Run Cross Validation"):
         if 'lrmodel' not in st.session_state:
             st.warning("Please train the models first!")
         else:
-            with st.spinner("Running cross validation... ⏳"):
+            with st.spinner("Running cross validation..."):
                 try:
                     lrmodel = st.session_state['lrmodel']
                     rfmodel = st.session_state['rfmodel']
@@ -220,7 +220,7 @@ elif section == "📈 Cross Validation":
                     lr_scores = cross_validate(lrmodel, xtrain_sc, ytrain, n_splits)
                     rf_scores = cross_validate(rfmodel, xtrain_sc, ytrain, n_splits)
 
-                    st.success("✅ Cross validation complete!")
+                    st.success("Cross validation complete!")
 
                     col1, col2 = st.columns(2)
                     with col1:
@@ -246,22 +246,22 @@ elif section == "📈 Cross Validation":
                     """)
 
                 except Exception as e:
-                    st.error(f"❌ Cross validation failed: {e}")
+                    st.error(f"Cross validation failed: {e}")
 
 # ════════════════════════════════════════════════════════════
-# SECTION 4 — Predict Loan Eligibility
+# SECTION 4 - Predict Loan Eligibility
 # ════════════════════════════════════════════════════════════
-elif section == "🔮 Predict Loan Eligibility":
-    st.header("🔮 Predict Loan Eligibility")
+elif section == "Predict Loan Eligibility":
+    st.header("Predict Loan Eligibility")
     st.markdown("Enter applicant details to predict if they should be approved.")
 
     try:
         model, scaler, columns = load_model('Loan_Model.pkl')
         model_available = True
-        st.success("✅ Trained model loaded!")
+        st.success("Trained model loaded!")
     except Exception:
         model_available = False
-        st.warning("⚠️ No trained model found. Please go to **Train & Compare Models** first!")
+        st.warning("No trained model found. Please go to **Train & Compare Models** first!")
 
     if model_available:
         col1, col2 = st.columns(2)
@@ -282,7 +282,7 @@ elif section == "🔮 Predict Loan Eligibility":
             credit_history     = st.selectbox("Credit History", [1, 0],
                                     format_func=lambda x: "Has Credit History" if x else "No Credit History")
 
-        if st.button("🔮 Predict Eligibility"):
+        if st.button("Predict Eligibility"):
             try:
                 # Build input matching one-hot encoded columns
                 input_dict = {col: 0 for col in columns}
@@ -309,26 +309,26 @@ elif section == "🔮 Predict Loan Eligibility":
 
                 st.divider()
                 if prediction == 1:
-                    st.success(f"### ✅ LOAN APPROVED")
+                    st.success(f"### LOAN APPROVED")
                     st.success(f"Approval Probability: **{probability:.2%}**")
                 else:
-                    st.error(f"### ❌ LOAN DENIED")
+                    st.error(f"### LOAN DENIED")
                     st.error(f"Approval Probability: **{probability:.2%}**")
 
                 # Show probability gauge
                 st.progress(probability)
                 st.caption(f"Model confidence: {probability:.2%} chance of approval")
 
-                with st.expander("📋 Input Summary"):
+                with st.expander("Input Summary"):
                     st.dataframe(
                         pd.DataFrame([final_input]).T.rename(columns={0: 'Value'})
                     )
 
             except Exception as e:
-                st.error(f"❌ Prediction failed: {e}")
+                st.error(f"Prediction failed: {e}")
                 import traceback
                 st.code(traceback.format_exc())
 
 st.sidebar.markdown("---")
-st.sidebar.markdown("**CST2216 — Individual Term Project**")
+st.sidebar.markdown("**Project**")
 st.sidebar.markdown("Loan Eligibility Prediction")
