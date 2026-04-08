@@ -90,7 +90,7 @@ def split_and_scale(df: pd.DataFrame, test_size=0.2):
         # y = df['Loan_Approved']
 
         x = df.drop('Loan_Approved', axis=1).fillna(0)
-        y = df['Loan_Approved']
+        y = df['Loan_Approved'].astype(int)
 
         xtrain, xtest, ytrain, ytest = train_test_split(
             x, y, test_size=test_size, stratify=y, random_state=42
