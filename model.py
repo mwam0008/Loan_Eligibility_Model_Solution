@@ -68,6 +68,12 @@ def preprocess(df: pd.DataFrame) -> pd.DataFrame:
         )
 
         # Encode target
+        # df['Loan_Approved'] = df['Loan_Approved'].replace({'Y': 1, 'N': 0})
+
+        # Safety: fill any remaining NaNs after encoding
+        df = df.fillna(0)
+
+        # Encode target
         df['Loan_Approved'] = df['Loan_Approved'].replace({'Y': 1, 'N': 0})
 
         logging.info(f"Preprocessing complete. Shape: {df.shape}")
@@ -80,7 +86,10 @@ def preprocess(df: pd.DataFrame) -> pd.DataFrame:
 def split_and_scale(df: pd.DataFrame, test_size=0.2):
     """Split data and apply MinMax scaling."""
     try:
-        x = df.drop('Loan_Approved', axis=1)
+        # x = df.drop('Loan_Approved', axis=1)
+        # y = df['Loan_Approved']
+
+        x = df.drop('Loan_Approved', axis=1).fillna(0)
         y = df['Loan_Approved']
 
         xtrain, xtest, ytrain, ytest = train_test_split(
