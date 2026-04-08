@@ -128,7 +128,7 @@ def plot_cross_validation(scores: np.ndarray, model_name: str):
         ax.axhline(0.76, color='red', linestyle='--', label='Target (76%)')
         ax.set_ylim(0, 1.1)
         ax.set_ylabel('Accuracy')
-        ax.set_title(f'{model_name} — Cross Validation (5 Folds)', fontweight='bold')
+        ax.set_title(f'{model_name} - Cross Validation (5 Folds)', fontweight='bold')
         ax.legend()
         plt.tight_layout()
         return fig
@@ -148,7 +148,7 @@ def plot_feature_importance(model, columns: list):
         ax.set_yticks(range(len(indices)))
         ax.set_yticklabels([columns[i] for i in indices], fontsize=8)
         ax.set_xlabel('Importance Score')
-        ax.set_title('Random Forest — Feature Importance', fontweight='bold')
+        ax.set_title('Random Forest - Feature Importance', fontweight='bold')
         plt.tight_layout()
         return fig
     except Exception as e:
