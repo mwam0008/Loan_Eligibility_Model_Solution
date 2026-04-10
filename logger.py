@@ -38,7 +38,7 @@ _logger = _get_logger()
 def log_app_start() -> None:
     """Log when the Streamlit app starts up."""
     _logger.info("=" * 60)
-    _logger.info("APP STARTED — Loan Eligibility Prediction")
+    _logger.info("APP STARTED - Loan Eligibility Prediction")
     _logger.info("=" * 60)
 
 
