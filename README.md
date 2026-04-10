@@ -31,7 +31,7 @@ loan_app/
 ├── app.py            ← Streamlit web app (4 pages)
 ├── model.py          ← All ML logic: preprocessing, training, evaluation, pickle
 ├── utils.py          ← All charts and visualizations
-├── credit.csv        ← German credit dataset (614 applicants)
+├── credit.csv        ← Credit dataset (614 applicants)
 ├── requirements.txt  ← Dependencies
 └── README.md         ← This file
 ```
@@ -54,4 +54,4 @@ loan_app/
 
 ## Dataset
 
-614 German credit loan applicants with 13 features including income, loan amount, credit history, and property area.
+614 Credit loan applicants with 13 features including income, loan amount, credit history, and property area.
